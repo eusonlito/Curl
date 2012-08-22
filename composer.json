@@ -1,5 +1,5 @@
 {
-    "name": "ans/curl",
+    "name": "ANS/Curl",
     "type": "library",
     "description": "A Simple Curl Interface",
     "version": "1.0",
