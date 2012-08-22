@@ -1,0 +1,32 @@
+{
+    "name": "ans/curl",
+    "type": "library",
+    "description": "A Simple Curl Interface",
+    "version": "1.0",
+    "keywords": ["php", "curl"],
+    "homepage": "https://github.com/eusonlito/Curl/",
+    "license": "AGPL-3.0",
+    "authors": [
+        {
+            "name": "A Navalla Suíza",
+            "email": "idc@anavallasuiza.com",
+            "homepage": "http://anavallasuiza.com",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "idc@anavallasuiza.com",
+        "issues": "https://github.com/eusonlito/Curl/issues"
+    },
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "config": {
+        "vendor-dir": "libs"
+    },
+    "autoload": {
+        "psr-0": {
+            "ANS\\Curl": "libs"
+        }
+    }
+}
