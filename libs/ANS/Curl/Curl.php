@@ -12,8 +12,7 @@ class Curl {
     private $debug = false;
 
     private $Timer;
-
-    public $Cache;
+    private $Debug;
 
     public function init ($server)
     {
@@ -54,9 +53,19 @@ class Curl {
         $this->Cache = $Cache;
     }
 
-    public function setDebug ($debug)
+    public function setDebug ($Debug, $function)
     {
-        $this->debug = $debug;
+        if (is_object($Debug) && method_exists($Debug, $function)) {
+            $Debug->function = $function;
+            $this->Debug = $Debug;
+        }
+    }
+
+    public function debug ($text, $trace = true)
+    {
+        if ($this->Debug) {
+            $this->Debug->{$this->Debug->function}($text, $trace);
+        }
     }
 
     public function setJson ($json)
@@ -164,30 +173,5 @@ class Curl {
     public function setCookie ($value)
     {
         curl_setopt($this->connection, CURLOPT_COOKIE, $value);
-    }
-
-    public function debug ($text, $trace = true)
-    {
-        if (!$this->debug) {
-            return true;
-        }
-
-        if ($trace) {
-            $debug = array_reverse(debug_backtrace());
-
-            echo '<pre>';
-
-            foreach ($debug as $row) {
-                echo "\n".$row['file'].' ['.$row['line'].']';
-            }
-
-            echo "\n\n";
-
-            print_r($text);
-
-            echo '</pre>';
-        } else {
-            echo "\n".'<pre>'; print_r($text); echo '</pre>'."\n";
-        }
     }
 }
