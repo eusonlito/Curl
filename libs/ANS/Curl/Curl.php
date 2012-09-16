@@ -5,6 +5,7 @@ class Curl {
     private $connection;
     private $server = '';
     private $headers = false;
+    private $header = '';
     private $response;
     private $info;
     private $json = false;
@@ -32,15 +33,20 @@ class Curl {
         curl_setopt($this->connection, CURLOPT_USERAGENT, 'Mozilla/5.0');
         curl_setopt($this->connection, CURLOPT_HTTPHEADER, array('Content-type: text/plain'));
 
-        if ($this->headers) {
-            curl_setopt($this->connection, CURLOPT_HEADER, true);
-            curl_setopt($this->connection, CURLOPT_VERBOSE, true);
-        }
+        $this->setHeader($this->headers);
     }
 
     public function setOption ($option, $value)
     {
         curl_setopt($this->connection, $option, $value);
+    }
+
+    public function setHeader ($headers)
+    {
+        $this->headers = $headers;
+
+        curl_setopt($this->connection, CURLOPT_HEADER, $headers);
+        curl_setopt($this->connection, CURLOPT_VERBOSE, $headers);
     }
 
     public function setTimer ($Timer)
@@ -112,6 +118,10 @@ class Curl {
             return '';
         }
 
+        if ($this->headers) {
+            list($this->header, $this->response) = explode("\r\n\r\n", $this->response, 2);
+        }
+
         if ($this->compact) {
             $html = preg_replace('/>\s+</', '><', str_replace(array("\n", "\r", "\t"), '', $this->response));
         } else {
@@ -158,6 +168,11 @@ class Curl {
         curl_setopt($this->connection, CURLOPT_CUSTOMREQUEST, false);
 
         return $html;
+    }
+
+    public function getHeader ()
+    {
+        return $this->header;
     }
 
     public function getInfo ()
